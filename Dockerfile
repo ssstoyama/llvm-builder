@@ -1,6 +1,8 @@
-FROM debian:bullseye
-
 ARG LLVM_VER=15
+
+FROM debian:bullseye as builder
+
+ARG LLVM_VER
 
 RUN apt update && apt install -y \
   git \
@@ -17,7 +19,7 @@ RUN cd llvm-project \
  && mkdir build-release \
  && cd build-release \
  && cmake ../llvm \
-      -DCMAKE_INSTALL_PREFIX=$HOME/llvm-release \
+      -DCMAKE_INSTALL_PREFIX=/tmp/llvm-release \
       -DCMAKE_BUILD_TYPE=Release \
       -DLLVM_ENABLE_PROJECTS="lld;clang" \
       -DLLVM_ENABLE_LIBXML2=OFF \
@@ -29,5 +31,9 @@ RUN cd llvm-project \
  && ninja install
 
 RUN rm -rf /tmp/llvm-project
+
+FROM alpine
+
+COPY --from=builder /tmp/llvm-release $HOME/llvm-release
 
 WORKDIR $HOME
