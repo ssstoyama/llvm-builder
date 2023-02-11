@@ -1,5 +1,7 @@
 FROM debian:bullseye
 
+ARG LLVM_VER=15
+
 RUN apt update && apt install -y \
   git \
   cmake \
@@ -8,14 +10,14 @@ RUN apt update && apt install -y \
 
 WORKDIR /tmp
 
-RUN git clone --depth 1 --branch release/15.x https://github.com/llvm/llvm-project llvm-project-15
+RUN git clone --depth 1 --branch release/15.x https://github.com/llvm/llvm-project llvm-project
 
-RUN cd llvm-project-15 \
- && git checkout release/15.x \
+RUN cd llvm-project \
+ && git checkout release/${LLVM_VER}.x \
  && mkdir build-release \
  && cd build-release \
  && cmake ../llvm \
-      -DCMAKE_INSTALL_PREFIX=$HOME/llvm15-release \
+      -DCMAKE_INSTALL_PREFIX=$HOME/llvm-release \
       -DCMAKE_BUILD_TYPE=Release \
       -DLLVM_ENABLE_PROJECTS="lld;clang" \
       -DLLVM_ENABLE_LIBXML2=OFF \
@@ -26,5 +28,6 @@ RUN cd llvm-project-15 \
       -G Ninja \
  && ninja install
 
-RUN cd /tmp \
- && rm -rf /tmp/llvm-project-15
+RUN rm -rf /tmp/llvm-project
+
+WORKDIR $HOME
