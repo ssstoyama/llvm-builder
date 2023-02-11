@@ -34,6 +34,6 @@ RUN rm -rf /tmp/llvm-project
 
 FROM alpine
 
-COPY --from=builder /tmp/llvm-release $HOME/llvm-release
+COPY --from=builder /tmp/llvm-release /home/llvm-release
 
-WORKDIR $HOME
+WORKDIR /home
