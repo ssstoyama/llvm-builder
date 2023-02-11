@@ -8,6 +8,7 @@ RUN apt update && apt install -y \
   git \
   cmake \
   gcc \
+  clang \
   ninja-build
 
 WORKDIR /tmp
