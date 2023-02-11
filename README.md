@@ -1,7 +1,7 @@
 # Building LLVM from source
 
 This project aims to build llvm from git source code with docker.
-Uploads the image to the specified registry after the build completes.
+Uploads the image to the Docker Hub after the build completes.
 
 ```bash
 export DOCKER_USER=<username of Docker Hub>
