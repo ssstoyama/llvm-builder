@@ -3,6 +3,7 @@ ARG LLVM_VER=15
 FROM debian:bullseye as builder
 
 ARG LLVM_VER
+ARG PROJECTS="lld;clang"
 
 RUN apt update && apt install -y \
   git \
@@ -22,7 +23,7 @@ RUN cd llvm-project \
  && cmake ../llvm \
       -DCMAKE_INSTALL_PREFIX=/tmp/llvm-release \
       -DCMAKE_BUILD_TYPE=Release \
-      -DLLVM_ENABLE_PROJECTS="lld;clang" \
+      -DLLVM_ENABLE_PROJECTS=${PROJECTS}\
       -DLLVM_ENABLE_LIBXML2=OFF \
       -DLLVM_ENABLE_TERMINFO=OFF \
       -DLLVM_ENABLE_LIBEDIT=OFF \
